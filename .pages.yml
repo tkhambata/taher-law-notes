@@ -1,0 +1,131 @@
+media:
+  - name: diagrams
+    label: Diagrams
+    input: public/media/diagrams
+    output: /media/diagrams
+    rename: safe
+    extensions: [svg, png, jpg, jpeg, webp]
+
+  - name: documents
+    label: Documents
+    input: public/media/documents
+    output: /media/documents
+    rename: safe
+    categories: [document]
+
+  - name: thumbnails
+    label: Thumbnails
+    input: public/media/thumbnails
+    output: /media/thumbnails
+    rename: safe
+    extensions: [png, jpg, jpeg, webp]
+
+content:
+  - name: law-notes
+    label: Law Notes
+    type: collection
+    path: src/content/docs
+    format: yaml-frontmatter
+    subfolders: true
+    exclude:
+      - index.mdx
+
+    filename:
+      template: "{primary}.md"
+      field: create
+
+    view:
+      layout: tree
+      fields: [title, jurisdiction, lawCurrentTo]
+      primary: title
+      sort: title
+      search: [title, description, jurisdiction]
+
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        required: true
+
+      - name: description
+        label: Search and page description
+        type: text
+        required: true
+
+      - name: jurisdiction
+        label: Jurisdiction
+        type: select
+        options:
+          values:
+            - England and Wales
+            - Northern Ireland
+            - Canada
+            - Ontario
+            - Other
+
+      - name: lawCurrentTo
+        label: Law current to
+        type: date
+        options:
+          format: yyyy-MM-dd
+
+      - name: sidebar
+        label: Navigation settings
+        type: object
+        fields:
+          - name: order
+            label: Display order
+            type: number
+
+      - name: youtubeUrl
+        label: YouTube URL
+        type: string
+        description: Paste the full YouTube or youtu.be URL, not just the video ID.
+
+      - name: youtubeTitle
+        label: YouTube title
+        type: string
+
+      - name: youtubeStart
+        label: Start time in seconds
+        type: number
+        description: Use a whole number of seconds, such as 0 or 60.
+
+      - name: diagrams
+        label: Diagrams
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: title
+            label: Diagram title
+            type: string
+            required: true
+
+          - name: src
+            label: Diagram file
+            type: image
+            required: true
+            options:
+              media: diagrams
+              extensions: [svg, png, jpg, jpeg, webp]
+
+          - name: alt
+            label: Short alternative text
+            type: text
+            required: true
+
+          - name: description
+            label: Full text description
+            type: text
+            description: Explain the important steps, branches and information in the diagram.
+
+      - name: body
+        label: Notes and questions
+        type: rich-text
+        options:
+          format: markdown
+          switcher: true
+          media: diagrams

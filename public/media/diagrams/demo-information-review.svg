@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="800" viewBox="0 0 1100 800">
+  <title>Sample information-review diagram</title>
+  <desc>A review step asks whether important information is missing. If yes, record questions and research further. If no, draft a provisional answer.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="800" fill="#f8fafc"/>
+  <text x="550" y="65" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#0f172a">Sample information review</text>
+  <text x="550" y="105" text-anchor="middle" font-family="Arial" font-size="20" fill="#475569">Website demonstration - not a legal test</text>
+
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="300" y="150" width="500" height="100" rx="18" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="550" y="210" font-size="28" font-weight="bold" fill="#1e3a8a">Review the available material</text>
+
+    <path d="M550 250 V300" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <path d="M550 320 L830 430 L550 540 L270 430 Z" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    <text x="550" y="420" font-size="25" font-weight="bold" fill="#78350f">Important information</text>
+    <text x="550" y="455" font-size="25" font-weight="bold" fill="#78350f">missing?</text>
+
+    <path d="M270 430 H200 V610" fill="none" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M830 430 H900 V610" fill="none" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <text x="160" y="520" font-size="26" fill="#475569">Yes</text>
+    <text x="945" y="520" font-size="26" fill="#475569">No</text>
+
+    <rect x="30" y="630" width="430" height="110" rx="18" fill="#fce7f3" stroke="#db2777" stroke-width="3"/>
+    <text x="245" y="675" font-size="24" font-weight="bold" fill="#831843">Record questions</text>
+    <text x="245" y="710" font-size="22" fill="#831843">and research further</text>
+
+    <rect x="640" y="630" width="430" height="110" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text x="855" y="675" font-size="24" font-weight="bold" fill="#14532d">Draft a provisional answer</text>
+    <text x="855" y="710" font-size="22" fill="#14532d">and explain its limitations</text>
+  </g>
+</svg>

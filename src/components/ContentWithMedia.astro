@@ -1,0 +1,67 @@
+---
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+import DiagramViewer from './DiagramViewer.astro';
+import VideoEmbed from './VideoEmbed.astro';
+
+const { entry } = Astro.locals.starlightRoute;
+
+const {
+  diagrams = [],
+  youtubeUrl,
+  youtubeTitle,
+  youtubeStart,
+  jurisdiction,
+  lawCurrentTo,
+} = entry.data;
+
+const formattedDate = lawCurrentTo
+  ? new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'UTC',
+    }).format(lawCurrentTo)
+  : undefined;
+---
+
+<Default>
+  {(jurisdiction || formattedDate) && (
+    <aside class="note-metadata not-content" aria-label="Note information">
+      {jurisdiction && (
+        <span>
+          <strong>Jurisdiction:</strong> {jurisdiction}
+        </span>
+      )}
+
+      {formattedDate && (
+        <span>
+          <strong>Law current to:</strong>{' '}
+          {formattedDate}
+        </span>
+      )}
+    </aside>
+  )}
+
+  <slot />
+
+  {diagrams.length > 0 && (
+    <DiagramViewer diagrams={diagrams} />
+  )}
+
+  {youtubeUrl && (
+    <VideoEmbed
+      url={youtubeUrl}
+      title={youtubeTitle}
+      start={youtubeStart}
+    />
+  )}
+</Default>
+
+<style>
+  .note-metadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-block: 1rem 2rem;
+    padding: 0.8rem 1rem;
+    border-left: 4px solid var(--sl-color-accent);
+    background: var(--sl-color-bg-nav);
+  }
+</style>

@@ -1,0 +1,430 @@
+---
+interface Diagram {
+  title: string;
+  src: string;
+  alt: string;
+  description?: string;
+}
+
+interface Props {
+  diagrams: Diagram[];
+  title?: string;
+}
+
+const { diagrams, title = 'Diagrams' } = Astro.props;
+---
+
+{diagrams.length > 0 && (
+  <section
+    class="diagram-gallery not-content"
+    data-diagram-gallery
+    aria-label={title}
+  >
+    <header class="diagram-heading">
+      <h2>{title}</h2>
+      <span data-position aria-live="polite"></span>
+    </header>
+
+    <div class="diagram-selectors" aria-label="Choose a diagram">
+      {diagrams.map((diagram, index) => (
+        <button
+          type="button"
+          data-select={index}
+          aria-pressed={index === 0 ? 'true' : 'false'}
+        >
+          {diagram.title}
+        </button>
+      ))}
+    </div>
+
+    <div class="diagram-toolbar" role="group" aria-label="Diagram controls">
+      <button type="button" data-prev disabled={diagrams.length < 2}>
+        Previous
+      </button>
+      <button type="button" data-zoom-out aria-label="Zoom out">−</button>
+      <span data-zoom aria-label="Zoom level">100%</span>
+      <button type="button" data-zoom-in aria-label="Zoom in">+</button>
+      <button type="button" data-reset>Reset</button>
+      <button type="button" data-fullscreen>Full screen</button>
+      <a data-download href={diagrams[0].src} download>Download</a>
+      <button type="button" data-next disabled={diagrams.length < 2}>
+        Next
+      </button>
+    </div>
+
+    <div
+      class="diagram-stage"
+      data-stage
+      tabindex="0"
+      aria-label="Interactive diagram. Arrow keys change diagrams; plus and minus zoom; zero resets."
+    >
+      {diagrams.map((diagram, index) => (
+        <figure
+          class="diagram-panel"
+          data-panel={index}
+          hidden={index !== 0}
+        >
+          <img
+            src={diagram.src}
+            alt={diagram.alt}
+            draggable="false"
+          />
+          <figcaption>{diagram.title}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <p class="diagram-help">
+      Drag to pan. Pinch to zoom on a touch screen. Hold Ctrl or Cmd while
+      scrolling to zoom. Click the diagram area before using keyboard
+      controls: arrow keys switch diagrams, + and − zoom, and 0 resets.
+      Press Esc to leave full screen.
+    </p>
+
+    <p class="diagram-message" data-message role="status"></p>
+
+    <div class="diagram-descriptions">
+      <h3>Text descriptions</h3>
+      {diagrams.map((diagram) => (
+        <details>
+          <summary>{diagram.title}</summary>
+          <p>{diagram.description || diagram.alt}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+)}
+
+<script>
+  import Panzoom from '@panzoom/panzoom';
+
+  function initializeDiagramViewers() {
+    document.querySelectorAll<HTMLElement>('[data-diagram-gallery]')
+      .forEach((root, galleryIndex) => {
+        if (root.dataset.ready) return;
+        root.dataset.ready = 'true';
+
+        const panels = Array.from(
+          root.querySelectorAll<HTMLElement>('[data-panel]')
+        );
+        if (!panels.length) return;
+
+        const buttons = Array.from(
+          root.querySelectorAll<HTMLButtonElement>('[data-select]')
+        );
+        const stage = root.querySelector<HTMLElement>('[data-stage]')!;
+        const zoomLabel = root.querySelector<HTMLElement>('[data-zoom]')!;
+        const position = root.querySelector<HTMLElement>('[data-position]')!;
+        const download = root.querySelector<HTMLAnchorElement>('[data-download]')!;
+        const message = root.querySelector<HTMLElement>('[data-message]')!;
+
+        const storageKey = `diagram-viewer:${location.pathname}:${galleryIndex}`;
+        const instances: Array<ReturnType<typeof Panzoom> | undefined> = [];
+        let active = 0;
+
+        function updateZoom() {
+          zoomLabel.textContent =
+            `${Math.round((instances[active]?.getScale() ?? 1) * 100)}%`;
+        }
+
+        function getInstance(index: number) {
+          if (!instances[index]) {
+            const image = panels[index].querySelector<HTMLImageElement>('img')!;
+            instances[index] = Panzoom(image, {
+              minScale: 1,
+              maxScale: 8,
+              canvas: true,
+            });
+
+            image.addEventListener('panzoomchange', () => {
+              if (index === active) updateZoom();
+            });
+          }
+
+          return instances[index]!;
+        }
+
+        function show(index: number, updateHash = false) {
+          active = ((index % panels.length) + panels.length) % panels.length;
+
+          panels.forEach((panel, i) => {
+            panel.hidden = i !== active;
+          });
+
+          buttons.forEach((button, i) => {
+            button.setAttribute('aria-pressed', String(i === active));
+          });
+
+          position.textContent = `${active + 1} / ${panels.length}`;
+          download.href = panels[active].querySelector<HTMLImageElement>('img')!.src;
+
+          try {
+            localStorage.setItem(storageKey, String(active));
+          } catch {
+            // The viewer still works when browser storage is blocked.
+          }
+
+          if (updateHash && galleryIndex === 0) {
+            history.replaceState(null, '', `#diagram-${active + 1}`);
+          }
+
+          requestAnimationFrame(() => {
+            getInstance(active);
+            updateZoom();
+          });
+        }
+
+        let initial = 0;
+
+        try {
+          const saved = localStorage.getItem(storageKey);
+          if (saved !== null) initial = Number(saved);
+        } catch {}
+
+        const hashMatch = location.hash.match(/^#diagram-(\d+)$/);
+        if (galleryIndex === 0 && hashMatch) {
+          initial = Number(hashMatch[1]) - 1;
+        }
+
+        if (
+          !Number.isInteger(initial) ||
+          initial < 0 ||
+          initial >= panels.length
+        ) {
+          initial = 0;
+        }
+
+        buttons.forEach((button, index) => {
+          button.addEventListener('click', () => show(index, true));
+        });
+
+        root.querySelector('[data-prev]')?.addEventListener(
+          'click', () => show(active - 1, true)
+        );
+        root.querySelector('[data-next]')?.addEventListener(
+          'click', () => show(active + 1, true)
+        );
+        root.querySelector('[data-zoom-in]')?.addEventListener(
+          'click', () => getInstance(active).zoomIn()
+        );
+        root.querySelector('[data-zoom-out]')?.addEventListener(
+          'click', () => getInstance(active).zoomOut()
+        );
+        root.querySelector('[data-reset]')?.addEventListener(
+          'click', () => getInstance(active).reset()
+        );
+
+        stage.addEventListener('wheel', (event) => {
+          if (!event.ctrlKey && !event.metaKey) return;
+          event.preventDefault();
+          getInstance(active).zoomWithWheel(event);
+        }, { passive: false });
+
+        stage.addEventListener('keydown', (event) => {
+          if (event.ctrlKey || event.metaKey || event.altKey) return;
+
+          switch (event.key) {
+            case 'ArrowRight':
+              event.preventDefault();
+              show(active + 1, true);
+              break;
+            case 'ArrowLeft':
+              event.preventDefault();
+              show(active - 1, true);
+              break;
+            case '+':
+            case '=':
+              event.preventDefault();
+              getInstance(active).zoomIn();
+              break;
+            case '-':
+              event.preventDefault();
+              getInstance(active).zoomOut();
+              break;
+            case '0':
+              event.preventDefault();
+              getInstance(active).reset();
+              break;
+          }
+        });
+
+        root.querySelector('[data-fullscreen]')?.addEventListener(
+          'click', async () => {
+            message.textContent = '';
+
+            try {
+              if (document.fullscreenElement === root) {
+                await document.exitFullscreen();
+              } else if (root.requestFullscreen) {
+                await root.requestFullscreen();
+              } else {
+                message.textContent =
+                  'Full screen is not available in this browser.';
+              }
+            } catch {
+              message.textContent =
+                'The browser could not open full screen.';
+            }
+          }
+        );
+
+        window.addEventListener('hashchange', () => {
+          if (galleryIndex !== 0) return;
+          const match = location.hash.match(/^#diagram-(\d+)$/);
+          if (!match) return;
+          const index = Number(match[1]) - 1;
+          if (index >= 0 && index < panels.length) show(index);
+        });
+
+        show(initial);
+      });
+  }
+
+  initializeDiagramViewers();
+  document.addEventListener('astro:page-load', initializeDiagramViewers);
+</script>
+
+<style>
+  .diagram-gallery {
+    margin-block: 2rem;
+    overflow: hidden;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.8rem;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+  }
+
+  .diagram-heading,
+  .diagram-toolbar,
+  .diagram-selectors {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .diagram-heading {
+    justify-content: space-between;
+  }
+
+  .diagram-heading h2 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  .diagram-toolbar {
+    border-block: 1px solid var(--sl-color-gray-5);
+  }
+
+  .diagram-gallery button,
+  .diagram-toolbar a {
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 0.4rem;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .diagram-gallery button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .diagram-selectors button[aria-pressed='true'] {
+    background: var(--sl-color-accent-low);
+    border-color: var(--sl-color-accent);
+  }
+
+  .diagram-gallery button:focus-visible,
+  .diagram-gallery a:focus-visible,
+  .diagram-stage:focus-visible {
+    outline: 3px solid var(--sl-color-accent);
+    outline-offset: -3px;
+  }
+
+  .diagram-stage {
+    height: clamp(300px, 65vh, 700px);
+    position: relative;
+    overflow: hidden;
+    background: #f6f7f9;
+    touch-action: none;
+  }
+
+  .diagram-panel {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  .diagram-panel[hidden] {
+    display: none !important;
+  }
+
+  .diagram-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+    cursor: grab;
+  }
+
+  .diagram-panel img:active {
+    cursor: grabbing;
+  }
+
+  .diagram-panel figcaption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .diagram-help,
+  .diagram-message,
+  .diagram-descriptions {
+    padding: 0.75rem 1rem;
+    margin: 0;
+  }
+
+  .diagram-help {
+    font-size: 0.85rem;
+  }
+
+  .diagram-message:empty {
+    display: none;
+  }
+
+  .diagram-descriptions h3 {
+    margin-top: 0;
+  }
+
+  .diagram-descriptions details {
+    margin-block: 0.6rem;
+  }
+
+  .diagram-gallery:fullscreen {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    overflow: auto;
+  }
+
+  .diagram-gallery:fullscreen .diagram-stage {
+    flex: 1;
+    min-height: 200px;
+  }
+
+  .diagram-gallery:fullscreen .diagram-descriptions {
+    display: none;
+  }
+</style>

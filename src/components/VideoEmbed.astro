@@ -1,0 +1,39 @@
+---
+import { YouTube } from '@astro-community/astro-embed-youtube';
+
+interface Props {
+  url: string;
+  title?: string;
+  start?: number;
+}
+
+const {
+  url,
+  title = 'Video lesson',
+  start,
+} = Astro.props;
+
+const params = start !== undefined ? `start=${start}` : undefined;
+---
+
+<section class="lesson-video not-content" aria-label={title}>
+  <h2>{title}</h2>
+
+  <YouTube
+    id={url}
+    title={title}
+    params={params}
+    playlabel={`Play ${title}`}
+    posterQuality="high"
+  />
+</section>
+
+<style>
+  .lesson-video {
+    margin-block: 2.5rem;
+  }
+
+  .lesson-video h2 {
+    margin-bottom: 1rem;
+  }
+</style>

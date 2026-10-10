@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1050" viewBox="0 0 1100 1050">
+  <title>Sample answer-planning workflow</title>
+  <desc>Five steps: read the facts, identify the issue, find the rule and authority, apply the rule, and write a provisional conclusion.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="1050" fill="#f8fafc"/>
+  <text x="550" y="65" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#0f172a">Sample answer-planning workflow</text>
+  <text x="550" y="105" text-anchor="middle" font-family="Arial" font-size="20" fill="#475569">Website demonstration - not a statement of legal rules</text>
+
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="150" y="150" width="800" height="120" rx="18" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="550" y="195" font-size="28" font-weight="bold" fill="#1e3a8a">1. Read the facts</text>
+    <text x="550" y="235" font-size="22" fill="#1e3a8a">Record the messages, dates and missing information.</text>
+
+    <path d="M550 270 V325" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <rect x="150" y="340" width="800" height="120" rx="18" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="550" y="385" font-size="28" font-weight="bold" fill="#312e81">2. Identify the issue</text>
+    <text x="550" y="425" font-size="22" fill="#312e81">Turn the disagreement into a focused question.</text>
+
+    <path d="M550 460 V515" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <rect x="150" y="530" width="800" height="120" rx="18" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    <text x="550" y="575" font-size="28" font-weight="bold" fill="#78350f">3. Find the rule and authority</text>
+    <text x="550" y="615" font-size="22" fill="#78350f">Consult your course materials and verify the source.</text>
+
+    <path d="M550 650 V705" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <rect x="150" y="720" width="800" height="120" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text x="550" y="765" font-size="28" font-weight="bold" fill="#14532d">4. Apply the rule</text>
+    <text x="550" y="805" font-size="22" fill="#14532d">Explain the arguments and identify factual uncertainty.</text>
+
+    <path d="M550 840 V895" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <rect x="150" y="910" width="800" height="100" rx="18" fill="#fce7f3" stroke="#db2777" stroke-width="3"/>
+    <text x="550" y="970" font-size="28" font-weight="bold" fill="#831843">5. Write a provisional conclusion</text>
+  </g>
+</svg>
