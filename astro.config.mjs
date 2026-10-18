@@ -32,7 +32,7 @@ for (const subject of subjects) {
 export default defineConfig({
   integrations: [
     starlight({
-      title: "Taher's Law Notes",
+      title: "Eh Hoser's Notes",
       description: 'A personal workspace for law notes, authorities and revision.',
       customCss: ['./src/styles/study.css'],
       components: {

@@ -1,4 +1,4 @@
-# Taher's Law Notes
+# Eh Hoser's Notes
 
 A personal law-study website built with the existing Astro Starlight application and edited through Pages CMS. Keep legal propositions tied to verified sources and the correct jurisdiction.
 
