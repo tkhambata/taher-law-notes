@@ -6,11 +6,11 @@ lawCurrentTo: 2026-10-18
 sidebar:
   label: Intro to Criminal Law
 diagrams:
-  - title: Intro to Criminal Law
+  - title: Introduction to Criminal Law
     src: /media/diagrams/criminal-law-diagram.svg
     alt: This chart showcases a short explanation of the detailed notes below.
 ---
-## Introduction to Criminal Law: Crime, Criminal Liability and the Principle of Legality
+## Introduction: Crime, Criminal Liability and the Principle of Legality
 
 An introduction to the purposes of criminal law, the elements of criminal liability, overcriminalisation and Article 7 ECHR, focusing on England & Wales and Northern Ireland.
 
