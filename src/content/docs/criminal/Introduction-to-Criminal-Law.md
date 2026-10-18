@@ -1,5 +1,5 @@
 ---
-title: Intro to Criminal Law
+title: Introduction to Criminal Law
 description: In this page I will provide an introduction to criminal law.
 jurisdiction: England and Wales
 lawCurrentTo: 2026-10-18
