@@ -1,0 +1,35 @@
+name: Website checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'improve/**'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Build production website
+        run: npm run build
+      - name: Check rendered subject cards and internal links
+        run: node scripts/check-built-site.mjs
+      - name: Save built website for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: dist/
+          retention-days: 7

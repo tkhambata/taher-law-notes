@@ -1,0 +1,30 @@
+:root {
+  --sl-color-accent-low: #15324a;
+  --sl-color-accent: #62b8e8;
+  --sl-color-accent-high: #c0defa;
+  --sl-color-bg: #0e1522;
+  --sl-color-bg-nav: #141e2e;
+  --sl-color-bg-sidebar: #111b2a;
+  --sl-content-width: 48rem;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #e6efff;
+  --sl-color-accent: #175ec4;
+  --sl-color-accent-high: #153e75;
+  --sl-color-bg: #ffffff;
+  --sl-color-bg-nav: #f4f7fc;
+  --sl-color-bg-sidebar: #f7f9fc;
+}
+
+body:has(.student-dashboard) { --sl-content-width: 68rem; }
+.sl-markdown-content { line-height: 1.8; }
+.sl-markdown-content :is(h2, h3, h4) { letter-spacing: -.018em; }
+.sl-markdown-content :is(h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: calc(var(--sl-nav-height, 4rem) + 1.5rem);
+}
+.sl-markdown-content a { text-underline-offset: .2em; }
+.sl-markdown-content :is(img, video, iframe) { max-width: 100%; }
+.sl-markdown-content :is(pre, table) { max-width: 100%; overflow-x: auto; }
+nav a[aria-current='page'] { border-radius: .45rem; }
+:focus-visible { outline-offset: 3px; }
