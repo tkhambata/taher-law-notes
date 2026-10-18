@@ -4,7 +4,7 @@ description: In this page I will provide an introduction to criminal law.
 jurisdiction: England and Wales
 lawCurrentTo: 2026-10-18
 sidebar:
-  label: Intro to Criminal Law
+  label: Introduction to Criminal Law
 diagrams:
   - title: Introduction to Criminal Law
     src: /media/diagrams/criminal-law-diagram.svg
