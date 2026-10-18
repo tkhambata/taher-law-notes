@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title description">
+<title id="title">Carlill: connect promise and performance</title>
+<desc id="description">A case-specific reading map: reward promise, seriousness, performance, acceptance and consideration, then the court outcome. Not a complete test for every advertisement.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#315d8b"/></marker></defs>
+<rect width="1000" height="1000" fill="#f7f9fd"/>
+<g font-family="Arial, sans-serif" fill="#132d48">
+<text x="60" y="65" font-size="30" font-weight="700">Carlill: a case-specific study map</text>
+<text x="60" y="100" font-size="20">Court of Appeal, 7 December 1892; [1893] 1 QB 256</text>
+<g stroke="#315d8b" stroke-width="3" marker-end="url(#arrow)"><path d="M500 260V295"/><path d="M500 420V455"/><path d="M500 580V615"/><path d="M500 740V775"/></g>
+<g stroke="#9db8d6" stroke-width="2"><rect x="60" y="135" width="880" height="125" rx="16" fill="#e7f0ff"/><rect x="60" y="295" width="880" height="125" rx="16" fill="#fff"/><rect x="60" y="455" width="880" height="125" rx="16" fill="#e6f6f1"/><rect x="60" y="615" width="880" height="125" rx="16" fill="#fff"/><rect x="60" y="775" width="880" height="125" rx="16" fill="#e7f0ff"/></g>
+<g font-size="24" font-weight="700"><text x="90" y="180">1. Read the precise reward promise</text><text x="90" y="340">2. Examine seriousness in context</text><text x="90" y="500">3. Identify the required performance</text><text x="90" y="660">4. Separate acceptance and consideration</text><text x="90" y="820">5. Record the outcome</text></g>
+<g font-size="21"><text x="90" y="220">£100 reward on stated conditions; a £1,000 bank deposit.</text><text x="90" y="380">The court treated this advertisement as a serious offer.</text><text x="90" y="540">Mrs Carlill used the product as directed and caught influenza.</text><text x="90" y="700">Performance accepted this offer; requested use was consideration.</text><text x="90" y="860">The company's appeal was dismissed; the reward was payable.</text></g>
+<text x="60" y="955" font-size="19">For study only. Read the judgment and check your jurisdiction and course.</text>
+</g></svg>
