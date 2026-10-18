@@ -5,14 +5,12 @@ media:
     output: /media/diagrams
     rename: safe
     extensions: [svg, png, jpg, jpeg, webp]
-
   - name: documents
     label: Documents
     input: public/media/documents
     output: /media/documents
     rename: safe
     categories: [document]
-
   - name: thumbnails
     label: Thumbnails
     input: public/media/thumbnails
@@ -20,149 +18,252 @@ media:
     rename: safe
     extensions: [png, jpg, jpeg, webp]
 
+components:
+  note_title:
+    type: string
+    label: Page title
+    required: true
+  note_body:
+    type: rich-text
+    label: Write your notes here
+    description: Use the visual toolbar for headings, lists, emphasis, links and images. No Markdown or HTML is required.
+    options:
+      format: markdown
+      switcher: false
+      media: diagrams
+  note_summary:
+    type: text
+    label: Short summary (optional)
+  note_jurisdiction:
+    type: select
+    label: Jurisdiction (optional)
+    options:
+      values: [England and Wales, Northern Ireland, Canada, Ontario, Other]
+  note_date:
+    type: date
+    label: Law checked to (optional)
+    description: Leave empty unless you have checked the legal content to that date.
+    options:
+      format: yyyy-MM-dd
+  note_navigation:
+    type: object
+    label: Page order and menu label (optional)
+    fields:
+      - name: order
+        label: Position in the subject
+        type: number
+        description: Smaller numbers appear first. Reserve 0 for the subject introduction.
+      - name: label
+        label: Short menu label
+        type: string
+        description: Remove this field to use the page title. Keep Overview on subject introductions.
+  note_video:
+    type: string
+    label: YouTube video link (optional)
+    description: Paste the complete https://www.youtube.com/watch?v=... or https://youtu.be/... link. To remove a video, remove this field rather than save an empty string.
+  note_video_title:
+    type: string
+    label: Video heading (optional)
+  note_video_start:
+    type: number
+    label: Video start time in seconds (optional)
+    description: Use 0 or a positive whole number, such as 60.
+  note_diagrams:
+    type: object
+    label: Diagrams - upload and describe (optional)
+    list:
+      collapsible:
+        collapsed: true
+        summary: "{title}"
+    fields:
+      - name: title
+        label: Diagram heading
+        type: string
+        required: true
+      - name: src
+        label: Choose or upload the diagram
+        type: image
+        required: true
+        options:
+          media: diagrams
+          extensions: [svg, png, jpg, jpeg, webp]
+      - name: alt
+        label: Short accessible description
+        type: text
+        required: true
+      - name: description
+        label: Explain the diagram in words
+        type: text
+
 content:
+  - name: contract-notes
+    label: Contract Law - notes
+    type: collection
+    path: src/content/docs/contract
+    format: yaml-frontmatter
+    subfolders: true
+    exclude: [index.md]
+    filename: &note_filename
+      template: "{primary}.md"
+      field: create
+    view: &note_view
+      fields: [title, description, jurisdiction]
+      primary: title
+      sort: title
+      search: [title, description, jurisdiction]
+    fields: &note_fields
+      - {name: title, component: note_title}
+      - {name: body, component: note_body}
+      - {name: description, component: note_summary}
+      - {name: jurisdiction, component: note_jurisdiction}
+      - {name: lawCurrentTo, component: note_date}
+      - {name: sidebar, component: note_navigation}
+      - {name: youtubeUrl, component: note_video}
+      - {name: youtubeTitle, component: note_video_title}
+      - {name: youtubeStart, component: note_video_start}
+      - {name: diagrams, component: note_diagrams}
+  - name: tort-notes
+    label: Tort Law - notes
+    type: collection
+    path: src/content/docs/tort
+    format: yaml-frontmatter
+    subfolders: true
+    exclude: [index.md]
+    filename: *note_filename
+    view: *note_view
+    fields: *note_fields
+  - name: public-notes
+    label: Public Law - notes
+    type: collection
+    path: src/content/docs/public
+    format: yaml-frontmatter
+    subfolders: true
+    exclude: [index.md]
+    filename: *note_filename
+    view: *note_view
+    fields: *note_fields
+  - name: constitutional-notes
+    label: Constitutional Law - notes
+    type: collection
+    path: src/content/docs/Constitutional Law
+    format: yaml-frontmatter
+    subfolders: true
+    exclude: [Constitutional Law.md]
+    filename: *note_filename
+    view: *note_view
+    fields: *note_fields
+  - name: criminal-notes
+    label: Criminal Law - notes
+    type: collection
+    path: src/content/docs/criminal
+    format: yaml-frontmatter
+    subfolders: true
+    exclude: [index.md]
+    filename: *note_filename
+    view: *note_view
+    fields: *note_fields
+  - name: trusts-notes
+    label: Trusts - notes
+    type: collection
+    path: src/content/docs/trusts
+    format: yaml-frontmatter
+    subfolders: true
+    exclude: [index.md]
+    filename: *note_filename
+    view: *note_view
+    fields: *note_fields
+  - name: land-notes
+    label: Land Law - notes
+    type: collection
+    path: src/content/docs/land
+    format: yaml-frontmatter
+    subfolders: true
+    exclude: [index.md]
+    filename: *note_filename
+    view: *note_view
+    fields: *note_fields
+  - name: editing-help
+    label: Help - how to use the editor
+    type: file
+    path: src/content/docs/editing-guide.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields:
+      - {name: title, component: note_title}
+      - {name: body, component: note_body}
+  - name: contract-introduction
+    label: Introduction - Contract Law
+    type: file
+    path: src/content/docs/contract/index.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields: *note_fields
+  - name: tort-introduction
+    label: Introduction - Tort Law
+    type: file
+    path: src/content/docs/tort/index.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields: *note_fields
+  - name: public-introduction
+    label: Introduction - Public Law
+    type: file
+    path: src/content/docs/public/index.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields: *note_fields
+  - name: constitutional-introduction
+    label: Introduction - Constitutional Law
+    type: file
+    path: src/content/docs/Constitutional Law/Constitutional Law.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields: *note_fields
+  - name: criminal-introduction
+    label: Introduction - Criminal Law
+    type: file
+    path: src/content/docs/criminal/index.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields: *note_fields
+  - name: trusts-introduction
+    label: Introduction - Trusts
+    type: file
+    path: src/content/docs/trusts/index.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields: *note_fields
+  - name: land-introduction
+    label: Introduction - Land Law
+    type: file
+    path: src/content/docs/land/index.md
+    format: yaml-frontmatter
+    operations: {delete: false, rename: false}
+    fields: *note_fields
   - name: subjects
-    label: Subject navigation and homepage
+    label: Advanced - homepage cards and subject menu
     type: file
     path: src/data/subjects.json
     format: json
+    operations: {delete: false, rename: false}
     fields:
       - name: subjects
-        label: Subjects in display order
+        label: Subjects in website display order
         type: object
         list:
           collapsible:
             collapsed: true
             summary: "{title}"
         fields:
-          - name: title
-            label: Subject name
-            type: string
-            required: true
+          - {name: title, label: Subject name, type: string, required: true}
           - name: directory
             label: Existing subject folder
             type: string
             required: true
-            description: Exact folder below src/content/docs, without a leading slash. Create the folder and overview note first. Preserve the existing Constitutional Law folder spelling.
+            description: Exact folder below src/content/docs. This entry does not create a folder or note.
           - name: href
-            label: Subject overview URL
+            label: Existing subject overview URL
             type: string
             required: true
-            description: Existing website path with leading and trailing slashes, such as /contract/. This must point to a real page; it does not create a page.
-          - name: description
-            label: Homepage card description
-            type: text
-            required: true
-
-  - name: law-notes
-    label: Law Notes - choose a subject folder first
-    type: collection
-    path: src/content/docs
-    format: yaml-frontmatter
-    subfolders: true
-    exclude:
-      - index.mdx
-
-    filename:
-      template: "{primary}.md"
-      field: create
-
-    view:
-      layout: tree
-      fields: [title, jurisdiction, lawCurrentTo]
-      primary: title
-      sort: title
-      search: [title, description, jurisdiction]
-
-    fields:
-      - name: title
-        label: Page title
-        type: string
-        required: true
-        description: The full heading shown on the page. Choose the correct subject folder before creating a note.
-
-      - name: description
-        label: Search and page description
-        type: text
-        required: true
-        description: A short summary of what this note covers.
-
-      - name: jurisdiction
-        label: Jurisdiction
-        type: select
-        options:
-          values:
-            - England and Wales
-            - Northern Ireland
-            - Canada
-            - Ontario
-            - Other
-
-      - name: lawCurrentTo
-        label: Law current to
-        type: date
-        options:
-          format: yyyy-MM-dd
-
-      - name: sidebar
-        label: Navigation settings
-        type: object
-        fields:
-          - name: label
-            label: Short navigation label
-            type: string
-            description: Optional. Use Overview for a subject landing page; otherwise remove this field to use the page title.
-          - name: order
-            label: Display order
-            type: number
-            description: Smaller numbers appear first. Reserve 0 for a subject overview; use 1, 2, 3 for topics. The editor tree itself remains alphabetical.
-
-      - name: youtubeUrl
-        label: YouTube URL
-        type: string
-        description: Paste the full YouTube or youtu.be URL, not just the video ID. Remove the field rather than saving an empty URL.
-
-      - name: youtubeTitle
-        label: YouTube title
-        type: string
-
-      - name: youtubeStart
-        label: Start time in seconds
-        type: number
-        description: Use a nonnegative whole number of seconds, such as 0 or 60.
-
-      - name: diagrams
-        label: Diagrams
-        type: object
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title}"
-        fields:
-          - name: title
-            label: Diagram title
-            type: string
-            required: true
-          - name: src
-            label: Diagram file
-            type: image
-            required: true
-            options:
-              media: diagrams
-              extensions: [svg, png, jpg, jpeg, webp]
-          - name: alt
-            label: Short alternative text
-            type: text
-            required: true
-          - name: description
-            label: Full text description
-            type: text
-            description: Explain the important steps, branches and information in the diagram.
-
-      - name: body
-        label: Notes and questions
-        type: rich-text
-        options:
-          format: markdown
-          switcher: true
-          media: diagrams
+            description: Use a real website path with leading and trailing slashes.
+          - {name: description, label: Homepage card description, type: text, required: true}

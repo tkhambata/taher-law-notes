@@ -40,6 +40,7 @@ export default defineConfig({
       },
       sidebar: [
         { label: 'Home', link: '/' },
+        { label: 'Editing help', link: '/editing-guide/' },
         ...subjects.map((subject) => ({
           label: subject.title,
           collapsed: true,
