@@ -1,0 +1,46 @@
+{
+  "subjects": [
+    {
+      "title": "Contract Law",
+      "directory": "contract",
+      "href": "/contract/",
+      "description": "Work through agreement, consideration and contract formation."
+    },
+    {
+      "title": "Tort Law",
+      "directory": "tort",
+      "href": "/tort/",
+      "description": "Connect your tort notes with duty of care and problem questions."
+    },
+    {
+      "title": "Public Law",
+      "directory": "public",
+      "href": "/public/",
+      "description": "Keep your public law reading and revision in one place."
+    },
+    {
+      "title": "Constitutional Law",
+      "directory": "Constitutional Law",
+      "href": "/constitutional-law/constitutional-law/",
+      "description": "Compare constitutional structures in the UK, USA and Canada."
+    },
+    {
+      "title": "Criminal Law",
+      "directory": "criminal",
+      "href": "/criminal/",
+      "description": "Build and organise your criminal law study notes."
+    },
+    {
+      "title": "Trusts",
+      "directory": "trusts",
+      "href": "/trusts/",
+      "description": "Bring your trusts reading, authorities and revision together."
+    },
+    {
+      "title": "Land Law",
+      "directory": "land",
+      "href": "/land/",
+      "description": "Create a clear home for your land law notes and revision."
+    }
+  ]
+}

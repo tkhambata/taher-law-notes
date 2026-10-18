@@ -21,8 +21,41 @@ media:
     extensions: [png, jpg, jpeg, webp]
 
 content:
+  - name: subjects
+    label: Subject navigation and homepage
+    type: file
+    path: src/data/subjects.json
+    format: json
+    fields:
+      - name: subjects
+        label: Subjects in display order
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: title
+            label: Subject name
+            type: string
+            required: true
+          - name: directory
+            label: Existing subject folder
+            type: string
+            required: true
+            description: Exact folder below src/content/docs, without a leading slash. Create the folder and overview note first. Preserve the existing Constitutional Law folder spelling.
+          - name: href
+            label: Subject overview URL
+            type: string
+            required: true
+            description: Existing website path with leading and trailing slashes, such as /contract/. This must point to a real page; it does not create a page.
+          - name: description
+            label: Homepage card description
+            type: text
+            required: true
+
   - name: law-notes
-    label: Law Notes
+    label: Law Notes - choose a subject folder first
     type: collection
     path: src/content/docs
     format: yaml-frontmatter
@@ -46,11 +79,13 @@ content:
         label: Page title
         type: string
         required: true
+        description: The full heading shown on the page. Choose the correct subject folder before creating a note.
 
       - name: description
         label: Search and page description
         type: text
         required: true
+        description: A short summary of what this note covers.
 
       - name: jurisdiction
         label: Jurisdiction
@@ -73,14 +108,19 @@ content:
         label: Navigation settings
         type: object
         fields:
+          - name: label
+            label: Short navigation label
+            type: string
+            description: Optional. Use Overview for a subject landing page; otherwise remove this field to use the page title.
           - name: order
             label: Display order
             type: number
+            description: Smaller numbers appear first. Reserve 0 for a subject overview; use 1, 2, 3 for topics. The editor tree itself remains alphabetical.
 
       - name: youtubeUrl
         label: YouTube URL
         type: string
-        description: Paste the full YouTube or youtu.be URL, not just the video ID.
+        description: Paste the full YouTube or youtu.be URL, not just the video ID. Remove the field rather than saving an empty URL.
 
       - name: youtubeTitle
         label: YouTube title
@@ -89,7 +129,7 @@ content:
       - name: youtubeStart
         label: Start time in seconds
         type: number
-        description: Use a whole number of seconds, such as 0 or 60.
+        description: Use a nonnegative whole number of seconds, such as 0 or 60.
 
       - name: diagrams
         label: Diagrams
@@ -103,7 +143,6 @@ content:
             label: Diagram title
             type: string
             required: true
-
           - name: src
             label: Diagram file
             type: image
@@ -111,12 +150,10 @@ content:
             options:
               media: diagrams
               extensions: [svg, png, jpg, jpeg, webp]
-
           - name: alt
             label: Short alternative text
             type: text
             required: true
-
           - name: description
             label: Full text description
             type: text
