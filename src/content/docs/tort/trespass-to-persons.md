@@ -311,7 +311,7 @@ Consider capacity, pressure, deception, the scope of permission and any withdraw
 
 - Facts: The case concerned proposed sterilisation of an adult woman unable to give valid consent.
 - Principle: At common law, necessary treatment of an adult unable to consent may be justified where it is in that person’s best interests.
-- Why remember it: Absence of consent does not automatically prohibit all treatment, but incapacity is not permission to do whatever others prefer. Necessity and best interests provide the justification, not fictional 
+- Why remember it: Absence of consent does not automatically prohibit all treatment, but incapacity is not permission to do whatever others prefer. Necessity and best interests provide the justification, not fictional
 
 For Northern Ireland, the Mental Capacity Act (Northern Ireland) 2016 has been partially commenced. Ordinary treatment decisions must be analysed under the applicable combination of common law and legislation, rather than automatically importing the Mental Capacity Act 2005 framework from England and [Wales.health-ni.gov](http://Wales.health-ni.gov)+1
 
